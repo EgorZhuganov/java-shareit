@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.Value;
 
 import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Value
 @Getter
@@ -13,9 +13,9 @@ import java.time.LocalDate;
 public class BookingCreateDto {
 
     @NotNull
-    LocalDate start;
+    LocalDateTime startDateTime;
     @NotNull
-    LocalDate end;
+    LocalDateTime endDateTime;
     @NotNull
     Long itemId;
     @NotNull

@@ -10,8 +10,8 @@ public class BookingReadMapper {
     public BookingReadDto mapFrom(Booking booking) {
         return BookingReadDto.builder()
                 .id(booking.getId())
-                .start(booking.getStart())
-                .end(booking.getEnd())
+                .startDateTime(booking.getStartDateTime())
+                .endDateTime(booking.getEndDateTime())
                 .bookerId(booking.getBooker().getId())
                 .itemId(booking.getItem().getId())
                 .status(booking.getStatus().name())

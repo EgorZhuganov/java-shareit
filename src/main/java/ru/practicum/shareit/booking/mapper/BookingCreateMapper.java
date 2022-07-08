@@ -16,8 +16,8 @@ public class BookingCreateMapper {
 
     public Booking mapFrom(BookingCreateDto dto) {
         return Booking.builder()
-                .start(dto.getStart())
-                .end(dto.getEnd())
+                .startDateTime(dto.getStartDateTime())
+                .endDateTime(dto.getEndDateTime())
                 .item(itemRepository.findById(dto.getItemId()).orElseThrow())
                 .booker(userRepository.findById(dto.getBookerId()).orElseThrow())
                 .build();

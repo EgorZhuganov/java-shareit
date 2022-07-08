@@ -9,7 +9,7 @@ import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.utils.BaseModel;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import static javax.persistence.EnumType.STRING;
 import static javax.persistence.GenerationType.IDENTITY;
@@ -25,10 +25,10 @@ public class Booking implements BaseModel<Long> {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
-    @Column(name = "start", nullable = false)
-    private LocalDate start;
-    @Column(name = "end", nullable = false)
-    private LocalDate end;
+    @Column(name = "start_date_time", nullable = false)
+    private LocalDateTime startDateTime;
+    @Column(name = "end_date_time", nullable = false)
+    private LocalDateTime endDateTime;
     @OneToOne
     @JoinColumn(name = "item_id")
     private Item item;

@@ -14,8 +14,8 @@ public class BookingUpdateMapper {
     public Booking mapFrom(Booking toObject, BookingUpdateDto fromDto) {
         toObject.setBooker(null);
         toObject.setItem(null);
-        toObject.setEnd(null);
-        toObject.setStart(null);
+        toObject.setEndDateTime(null);
+        toObject.setStartDateTime(null);
         toObject.setStatus(null);
         return toObject;
     }
