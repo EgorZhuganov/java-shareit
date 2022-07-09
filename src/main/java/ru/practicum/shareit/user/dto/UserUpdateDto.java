@@ -18,7 +18,7 @@ import static lombok.AccessLevel.PRIVATE;
 public class UserUpdateDto {
 
     Long id;
-    String name;
-    String email;
+    Optional<String> name;
+    Optional<String> email;
 
 }

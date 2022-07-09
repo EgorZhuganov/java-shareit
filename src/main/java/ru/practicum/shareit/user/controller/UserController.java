@@ -66,10 +66,10 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    @ResponseStatus(OK) //TODO изменить на NO_CONTENT или исправить тест
+    @ResponseStatus(OK)
     public void delete(@PathVariable Long id) {
-        if (!userService.delete(id)) {
-            throw new ResponseStatusException(NOT_FOUND);
-        }
+        userService.delete(id).orElseThrow(() -> {
+            throw new ResponseStatusException(NOT_FOUND, format("User with id %d not found for delete", id));
+        });
     }
 }

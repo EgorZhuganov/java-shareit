@@ -18,6 +18,6 @@ public interface AbstractUserService {
 
     Optional<UserReadDto> update(Long id, @Valid UserUpdateDto dto);
 
-    boolean delete(Long id);
+    Optional<UserReadDto> delete(Long id);
 
 }

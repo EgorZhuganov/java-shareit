@@ -8,10 +8,8 @@ import ru.practicum.shareit.user.model.User;
 public class UserUpdateMapper {
 
     public User mapFrom(UserUpdateDto fromDto, User toObject) {
-        if (fromDto.getEmail() != null)
-            toObject.setEmail(fromDto.getEmail());
-        if (fromDto.getName() != null)
-            toObject.setName(fromDto.getName());
+        fromDto.getName().ifPresent(toObject::setName);
+        fromDto.getEmail().ifPresent(toObject::setEmail);
         return toObject;
     }
 

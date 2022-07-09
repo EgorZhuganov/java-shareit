@@ -3,6 +3,7 @@ package ru.practicum.shareit.user.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import ru.practicum.shareit.user.dto.UserCreateDto;
 import ru.practicum.shareit.user.dto.UserReadDto;
@@ -16,9 +17,7 @@ import ru.practicum.shareit.user.validation.UserValidator;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
-import static java.lang.String.format;
 import static java.util.Optional.of;
 import static java.util.stream.Collectors.toList;
 
@@ -34,7 +33,8 @@ public class UserService implements AbstractUserService {
     private final UserUpdateMapper userUpdateMapper;
     private final UserValidator userValidator;
 
-
+    @Transactional
+    @Override
     public UserReadDto create(@Valid UserCreateDto dto) {
         userValidator.isValid(dto.getEmail());
         return of(dto)
@@ -44,12 +44,16 @@ public class UserService implements AbstractUserService {
                 .orElseThrow();
     }
 
+    @Transactional(readOnly = true)
+    @Override
     public Optional<UserReadDto> findById(Long id) {
         return userRepository
                 .findById(id)
                 .map(userReadMapper::mapFrom);
     }
 
+    @Transactional(readOnly = true)
+    @Override
     public List<UserReadDto> findAll() {
         return userRepository
                 .findAll()
@@ -58,22 +62,27 @@ public class UserService implements AbstractUserService {
                 .collect(toList());
     }
 
+    @Transactional
+    @Override
     public Optional<UserReadDto> update(Long id, @Valid UserUpdateDto dto) {
-        userValidator.isValid(dto.getEmail());
+        dto.getEmail().ifPresent(userValidator::isValid);
 
-        return userRepository.findById(id)
+        return userRepository
+                .findById(id)
                 .map(user -> userUpdateMapper.mapFrom(dto, user))
                 .map(userRepository::save)
                 .map(userReadMapper::mapFrom);
     }
 
-    public boolean delete(Long id) {
+    @Transactional
+    @Override
+    public Optional<UserReadDto> delete(Long id) {
         return userRepository
                 .findById(id)
                 .map(user -> {
                     userRepository.delete(user);
-                    return true;
+                    return user;
                 })
-                .orElse(false);
+                .map(userReadMapper::mapFrom);
     }
 }

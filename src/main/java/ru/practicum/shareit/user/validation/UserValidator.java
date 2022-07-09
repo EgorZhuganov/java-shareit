@@ -3,6 +3,7 @@ package ru.practicum.shareit.user.validation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.user.repository.UserRepository;
 
 import static java.lang.String.format;
@@ -14,6 +15,7 @@ public class UserValidator {
 
     private final UserRepository userRepository;
 
+    @Transactional(readOnly = true)
     public boolean isValid(String email) {
         if (userRepository.findByEmail(email).isPresent()) {
             log.warn("User with email {} already exist", email);
