@@ -6,8 +6,6 @@ import lombok.Getter;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 
-import javax.validation.constraints.NotNull;
-
 import java.util.Optional;
 
 import static lombok.AccessLevel.PRIVATE;

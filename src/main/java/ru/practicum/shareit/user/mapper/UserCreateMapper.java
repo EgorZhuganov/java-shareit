@@ -2,7 +2,7 @@ package ru.practicum.shareit.user.mapper;
 
 import org.springframework.stereotype.Component;
 import ru.practicum.shareit.user.dto.UserCreateDto;
-import ru.practicum.shareit.user.User;
+import ru.practicum.shareit.user.model.User;
 
 import java.util.ArrayList;
 
