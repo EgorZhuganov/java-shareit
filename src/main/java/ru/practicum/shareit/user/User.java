@@ -1,14 +1,14 @@
-package ru.practicum.shareit.user.model;
+package ru.practicum.shareit.user;
 
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.practicum.shareit.booking.model.Booking;
-import ru.practicum.shareit.comment.model.Comment;
-import ru.practicum.shareit.item.model.Item;
-import ru.practicum.shareit.request.model.ItemRequest;
+import ru.practicum.shareit.booking.Booking;
+import ru.practicum.shareit.comment.Comment;
+import ru.practicum.shareit.item.Item;
+import ru.practicum.shareit.request.ItemRequest;
 import ru.practicum.shareit.utils.BaseModel;
 
 import javax.persistence.*;
