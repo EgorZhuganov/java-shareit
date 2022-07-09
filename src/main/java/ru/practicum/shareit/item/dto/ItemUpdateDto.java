@@ -8,6 +8,8 @@ import lombok.experimental.FieldDefaults;
 
 import javax.validation.constraints.NotNull;
 
+import java.util.Optional;
+
 import static lombok.AccessLevel.PRIVATE;
 
 @Builder
@@ -17,12 +19,8 @@ import static lombok.AccessLevel.PRIVATE;
 @FieldDefaults(level = PRIVATE)
 public class ItemUpdateDto {
 
-    @NotNull
-    Long id;
-    @NotNull
-    String name;
-    @NotNull
-    String description;
-    boolean available;
+    Optional<String> name;
+    Optional<String> description;
+    Optional<Boolean> available;
 
 }

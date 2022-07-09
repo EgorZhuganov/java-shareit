@@ -13,12 +13,13 @@ public class ItemCreateMapper {
     private final ItemRequestRepository itemRequestRepository;
 
     public Item mapFrom(ItemCreateDto dto) {
-        return Item.builder()
+        Item item = Item.builder()
                 .name(dto.getName())
                 .description(dto.getDescription())
-                .itemRequest(itemRequestRepository.findById(dto.getItemRequestId()).orElse(null))
-                .available(true)
+                .available(dto.getAvailable())
                 .build();
+        dto.getItemRequestId().ifPresent(id -> item.setItemRequest(itemRequestRepository.findById(id).orElseThrow()));
+        return item;
     }
 
 }

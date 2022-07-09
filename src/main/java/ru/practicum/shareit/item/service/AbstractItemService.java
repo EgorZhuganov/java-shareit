@@ -17,8 +17,10 @@ public interface AbstractItemService {
 
     List<ItemReadDto> findAllByOwnerId(Long ownerId);
 
-    Optional<ItemReadDto> update(@NotNull Long ownerId, @Valid ItemUpdateDto dto);
+    Optional<ItemReadDto> update(@NotNull Long ownerId, Long id, @Valid ItemUpdateDto dto);
 
     List<ItemReadDto> findByAvailableTrueAndDescriptionContainingIgnoreCase(String text);
+
+    Optional<ItemReadDto> delete(@NotNull Long ownerId, Long id);
 
 }

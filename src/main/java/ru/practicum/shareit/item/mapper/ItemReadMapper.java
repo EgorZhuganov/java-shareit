@@ -8,13 +8,16 @@ import ru.practicum.shareit.item.model.Item;
 public class ItemReadMapper {
 
     public ItemReadDto mapFrom(Item item) {
-        return ItemReadDto.builder()
+        var dto =  ItemReadDto.builder()
+                .id(item.getId())
                 .name(item.getName())
                 .description(item.getDescription())
                 .available(item.isAvailable())
-                .itemRequestId(item.getItemRequest().getId())
-                .ownerId(item.getOwner().getId())
-                .build();
+                .ownerId(item.getOwner().getId());
+        if (item.getItemRequest() != null)
+           dto.itemRequestId(item.getItemRequest().getId());
+
+        return dto.build();
     }
 
 }

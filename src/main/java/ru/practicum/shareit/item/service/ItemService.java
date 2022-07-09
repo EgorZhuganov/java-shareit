@@ -3,6 +3,7 @@ package ru.practicum.shareit.item.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import ru.practicum.shareit.item.dto.ItemCreateDto;
 import ru.practicum.shareit.item.dto.ItemReadDto;
@@ -34,6 +35,7 @@ public class ItemService implements AbstractItemService {
     private final ItemReadMapper itemReadMapper;
     private final ItemUpdateMapper itemUpdateMapper;
 
+    @Transactional
     @Override
     public ItemReadDto create(@NotNull Long ownerId, @Valid ItemCreateDto dto) {
         var maybeUser = userRepository.findById(ownerId);
@@ -51,12 +53,14 @@ public class ItemService implements AbstractItemService {
                 .orElseThrow();
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Optional<ItemReadDto> findById(Long id) {
         return itemRepository.findById(id)
                 .map(itemReadMapper::mapFrom);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<ItemReadDto> findAllByOwnerId(Long ownerId) {
         return itemRepository.findAllByOwnerId(ownerId)
@@ -65,13 +69,25 @@ public class ItemService implements AbstractItemService {
                 .collect(toList());
     }
 
+    @Transactional(readOnly = true)
     @Override
-    public Optional<ItemReadDto> update(@NotNull Long ownerId, @Valid ItemUpdateDto dto) {
-        var maybeItem = itemRepository.findById(dto.getId());
+    public List<ItemReadDto> findByAvailableTrueAndDescriptionContainingIgnoreCase(String text) {
+        if (text.isBlank())
+            return List.of();
+
+        return itemRepository.findByAvailableTrueAndDescriptionContainingIgnoreCase(text).stream()
+                .map(itemReadMapper::mapFrom)
+                .collect(toList());
+    }
+
+    @Transactional
+    @Override
+    public Optional<ItemReadDto> update(@NotNull Long ownerId, Long id, @Valid ItemUpdateDto dto) {
+        var maybeItem = itemRepository.findById(id);
         if (maybeItem.isPresent() && !maybeItem.get().getOwner().getId().equals(ownerId)) {
-            log.warn("Trying change item with id {} by user with id {} which not owner", dto.getId(), ownerId);
+            log.warn("Trying change item with id {} by user with id {} which not owner", id, ownerId);
             throw new UnsupportedOperationException(
-                    format("Trying change item with id %d by user with id %d which not owner", dto.getId(), ownerId));
+                    format("Trying change item with id %d by user with id %d which not owner", id, ownerId));
         }
         return maybeItem
                 .map(item -> itemUpdateMapper.mapFrom(dto, item))
@@ -79,10 +95,21 @@ public class ItemService implements AbstractItemService {
                 .map(itemReadMapper::mapFrom);
     }
 
+    @Transactional
     @Override
-    public List<ItemReadDto> findByAvailableTrueAndDescriptionContainingIgnoreCase(String text) {
-        return itemRepository.findByAvailableTrueAndDescriptionContainingIgnoreCase(text).stream()
-                .map(itemReadMapper::mapFrom)
-                .collect(toList());
+    public Optional<ItemReadDto> delete(@NotNull Long ownerId, Long id) {
+        var maybeItem = itemRepository.findById(id);
+        if (maybeItem.isPresent() && !maybeItem.get().getOwner().getId().equals(ownerId)) {
+            log.warn("Trying delete item with id {} by user with id {} which not owner", id, ownerId);
+            throw new UnsupportedOperationException(
+                    format("Trying delete item with id %d by user with id %d which not owner", id, ownerId));
+        }
+
+        return itemRepository.findById(id)
+                .map(item -> {
+                    itemRepository.delete(item);
+                    return item;
+                })
+                .map(itemReadMapper::mapFrom);
     }
 }

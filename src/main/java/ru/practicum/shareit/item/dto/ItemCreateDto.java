@@ -6,6 +6,7 @@ import lombok.Value;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.Optional;
 
 @Value
 @Getter
@@ -16,6 +17,8 @@ public class ItemCreateDto {
     String name;
     @NotBlank
     String description;
-    Long itemRequestId;
+    Optional<Long> itemRequestId;
+    @NotNull
+    Boolean available;
 
 }

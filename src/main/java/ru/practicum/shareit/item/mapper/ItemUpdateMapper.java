@@ -8,9 +8,9 @@ import ru.practicum.shareit.item.model.Item;
 public class ItemUpdateMapper {
 
     public Item mapFrom(ItemUpdateDto fromDto, Item toObject) {
-        toObject.setAvailable(fromDto.isAvailable());
-        toObject.setName(fromDto.getName());
-        toObject.setDescription(fromDto.getDescription());
+        fromDto.getName().ifPresent(toObject::setName);
+        fromDto.getDescription().ifPresent(toObject::setDescription);
+        fromDto.getAvailable().ifPresent(toObject::setAvailable);
         return toObject;
     }
 
