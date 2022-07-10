@@ -11,7 +11,7 @@ import ru.practicum.shareit.user.dto.UserUpdateDto;
 import ru.practicum.shareit.user.mapper.UserCreateMapper;
 import ru.practicum.shareit.user.mapper.UserReadMapper;
 import ru.practicum.shareit.user.mapper.UserUpdateMapper;
-import ru.practicum.shareit.user.repository.UserRepository;
+import ru.practicum.shareit.user.repository.InMemoryUserRepository;
 import ru.practicum.shareit.user.validation.UserValidator;
 
 import javax.validation.Valid;
@@ -27,7 +27,7 @@ import static java.util.stream.Collectors.toList;
 @RequiredArgsConstructor
 public class UserService implements AbstractUserService {
 
-    private final UserRepository userRepository;
+    private final InMemoryUserRepository userRepository; //TODO изменить на UserRepository с переходом на БД
     private final UserCreateMapper userCreateMapper;
     private final UserReadMapper userReadMapper;
     private final UserUpdateMapper userUpdateMapper;
@@ -80,7 +80,7 @@ public class UserService implements AbstractUserService {
         return userRepository
                 .findById(id)
                 .map(user -> {
-                    userRepository.delete(user);
+                    userRepository.delete(user.getId()); //TODO изменить на userRepository.delete(user); с переходом на БД
                     return user;
                 })
                 .map(userReadMapper::mapFrom);

@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import ru.practicum.shareit.user.repository.UserRepository;
+import ru.practicum.shareit.user.repository.InMemoryUserRepository;
 
 import static java.lang.String.format;
 
@@ -13,7 +13,7 @@ import static java.lang.String.format;
 @RequiredArgsConstructor
 public class UserValidator {
 
-    private final UserRepository userRepository;
+    private final InMemoryUserRepository userRepository; //TODO изменить на UserRepository при добавлении БД
 
     @Transactional(readOnly = true)
     public boolean isValid(String email) {

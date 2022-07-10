@@ -11,8 +11,8 @@ import ru.practicum.shareit.item.dto.ItemUpdateDto;
 import ru.practicum.shareit.item.mapper.ItemCreateMapper;
 import ru.practicum.shareit.item.mapper.ItemReadMapper;
 import ru.practicum.shareit.item.mapper.ItemUpdateMapper;
-import ru.practicum.shareit.item.repository.ItemRepository;
-import ru.practicum.shareit.user.repository.UserRepository;
+import ru.practicum.shareit.item.repository.InMemoryItemRepository;
+import ru.practicum.shareit.user.repository.InMemoryUserRepository;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -29,8 +29,8 @@ import static java.util.stream.Collectors.toList;
 @RequiredArgsConstructor
 public class ItemService implements AbstractItemService {
 
-    private final ItemRepository itemRepository;
-    private final UserRepository userRepository;
+    private final InMemoryItemRepository itemRepository; //TODO изменить на ItemRepository при добавлении БД
+    private final InMemoryUserRepository userRepository; //TODO изменить на UserRepository при добавлении БД
     private final ItemCreateMapper itemCreateMapper;
     private final ItemReadMapper itemReadMapper;
     private final ItemUpdateMapper itemUpdateMapper;
@@ -107,7 +107,7 @@ public class ItemService implements AbstractItemService {
 
         return itemRepository.findById(id)
                 .map(item -> {
-                    itemRepository.delete(item);
+                    itemRepository.delete(item.getId()); //TODO изменить при переходе на БД delete(item)
                     return item;
                 })
                 .map(itemReadMapper::mapFrom);
